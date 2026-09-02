@@ -1,0 +1,6 @@
+applicationType: grpc
+defaultPackage: com.hamropatro
+testFramework: junit
+sourceLanguage: java
+buildTool: gradle
+features: [app-name, cassandra, discovery-core, gradle, grpc, http-client-test, java, java-application, junit, logback, lombok, micronaut-build, micronaut-configuration-validation-gradle-plugin, properties, readme, serialization-jackson, shade]

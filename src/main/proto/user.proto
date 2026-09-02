@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.hamropatro";
+option java_outer_classname = "UserServiceProto";
+option objc_class_prefix = "USP";
+import "common.proto";
+
+package com.hamropatro;
+
+service UserService {
+  rpc GetUserByUserId (UserIdRequest) returns (GetUserResponse) {}
+  rpc ListUser(Empty) returns (GetAllUserResponse) {}
+}
+
+message UserIdRequest {
+  string user_id = 1;
+}
+
+message GetUserResponse {
+  string user_id = 1;
+  string user_email = 2;
+  string user_name = 3;
+}
+
+message GetAllUserResponse {
+  repeated Users user = 1;
+}

@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+
+option java_multiple_files = true;
+option java_package = "com.hamropatro";
+option java_outer_classname = "CandidateServiceProto";
+option objc_class_prefix = "CSP";
+import "common.proto";
+
+package com.hamropatro;
+
+service CandidateService {
+  rpc CreateCandidate(CreateCandidateRequest)returns (Response){}
+  rpc GetCandidateByCandidateId(CandidateIdRequest) returns (GetCandidateByCandidateIdResponse) {}
+  rpc GetAllCandidate(Empty) returns (GetAllCandidateResponse) {}
+  rpc GetAllCandidateByElectionId(CandidateByElectionIdRequest) returns (GetAllCandidateResponse){}
+  rpc UpdateCandidate(UpdateCandidateRequest)returns (Response){}
+  rpc DeleteCandidate(DeleteCandidateRequest) returns (Response){}
+}
+
+message CreateCandidateRequest{
+  string candidate_name = 1;
+  string election_id = 2;
+  string candidate_email = 3;
+  int32 candidate_age = 4;
+}
+message DeleteCandidateRequest {
+  string candidate_id = 1;
+  string election_id = 2;
+}
+
+message CandidateIdRequest{
+  string candidate_id = 1;
+}
+message GetCandidateByCandidateIdResponse {
+  string candidate_id = 1;
+  string candidate_name = 2;
+  int32 candidate_age = 3;
+  string candidate_email = 4;
+  string election_id = 5;
+  int64 created_at = 6;
+  int64 updated_at = 7;
+}
+
+message GetAllCandidateResponse {
+  repeated Candidates candidate = 1;
+}
+
+message CandidateByElectionIdRequest{
+  string election_id = 1;
+}
+
+message UpdateCandidateRequest{
+  string candidate_name = 1;
+  int32 candidate_age = 2;
+  string candidate_email = 3;
+  string candidate_id = 4;
+  string election_id = 5;
+}

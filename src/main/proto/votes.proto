@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.hamropatro";
+option java_outer_classname = "VotesService";
+
+option objc_class_prefix = "VS";
+import "common.proto";
+
+package com.hamropatro;
+
+service VotingService {
+  rpc CastVote (CastVoteRequest) returns (Response) {}
+  rpc UpdateVote(UpdateVoteRequest) returns (Response){}
+  rpc GetAllVote(Empty) returns (GetAllVotesResponse){}
+  rpc VotesCountByElectionId (VotesByElectionIdRequest) returns (VoteCountResponse) {}
+  rpc VotesCountByCandidateId (VotesByCandidateIdRequest) returns (VoteCountResponse) {}
+}
+
+message CastVoteRequest {
+  string election_id = 1;
+  string user_id = 2;
+  string candidate_id = 3;
+}
+
+message VoteExistsRequest{
+  string election_id = 1;
+  string user_id = 2;
+}
+
+message VoteExistsResponse{
+  bool exists = 1;
+}
+
+message VotesByElectionIdRequest{
+  string election_id = 2;
+}
+
+message GetAllVotesResponse{
+  repeated Votes votes = 1;
+}
+
+message VoteCountResponse{
+  int64 count = 1;
+}
+
+message VotesByCandidateIdRequest{
+  string candidate_id = 1;
+  string election_id = 2;
+}
+
+message UpdateVoteRequest{
+  string new_candidate_id = 1;
+  string old_candidate_id = 2;
+  string election_id = 3;
+  string user_id = 4;
+  string vote_date = 5;
+}

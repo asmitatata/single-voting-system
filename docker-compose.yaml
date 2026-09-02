@@ -1,0 +1,7 @@
+services:
+  scylla:
+    image: scylladb/scylla:6.2
+    container_name: scylla-new-voting
+    command: --smp 1 --memory 1G --overprovisioned 1
+    ports:
+      - "9042:9042"

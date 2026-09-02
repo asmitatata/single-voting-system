@@ -1,0 +1,105 @@
+plugins {
+    id("io.micronaut.application") version "5.0.2"
+    id("com.google.protobuf") version "0.9.6"
+    id("com.gradleup.shadow") version "9.4.1"
+}
+
+version = "0.1"
+group = "com.hamropatro"
+
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    implementation("io.micronaut:micronaut-discovery-core")
+    implementation("io.micronaut.cassandra:micronaut-cassandra")
+    implementation("io.micronaut.grpc:micronaut-grpc-runtime")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("javax.annotation:javax.annotation-api")
+    compileOnly("org.projectlombok:lombok")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("org.mindrot:jbcrypt:0.4")
+    implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
+    implementation("com.google.api-client:google-api-client:2.7.2")
+    implementation("com.google.oauth-client:google-oauth-client-jetty:1.36.0")
+    implementation("com.google.http-client:google-http-client-gson:1.45.0")
+}
+
+
+
+application {
+    mainClass = "com.hamropatro.Application"
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("25")
+    targetCompatibility = JavaVersion.toVersion("25")
+}
+
+
+
+
+graalvmNative {
+    binaries {
+        all {
+            buildArgs.add("-H:+SharedArenaSupport")
+        }
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs("build/generated/source/proto/main/grpc")
+            srcDirs("build/generated/source/proto/main/java")
+        }
+    }
+}
+
+protobuf {
+    protoc { artifact = "com.google.protobuf:protoc:4.34.1" }
+    plugins {
+        grpc { artifact = "io.grpc:protoc-gen-grpc-java:1.82.2" }
+    }
+    generateProtoTasks {
+        all()*.plugins { grpc {} }
+    }
+}
+
+
+
+micronaut {
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.hamropatro.*")
+    }
+}
+
+tasks.named("dockerfile") {
+
+    baseImage = "eclipse-temurin:25-jre"
+}
+
+
+
+
+
+
+
+// https://docs.gradle.org/current/userguide/upgrading_major_version_9.html#test_task_fails_when_no_tests_are_discovered
+tasks.withType(AbstractTestTask).configureEach {
+    failOnNoDiscoveredTests = false
+}
+
+
+
+
